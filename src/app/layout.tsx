@@ -6,6 +6,7 @@ import DotPattern from "@/components/ui/dot-pattern";
 import NavHeader from "@/components/ui/NavHeader";
 import { ThemeProvider } from "next-themes";
 import { ClientThemeProvider } from "@/components/ui/ThemeProvider";
+import Image from "next/image";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,7 +37,11 @@ export default function RootLayout({
         <ClientThemeProvider>
           {/* <DotPattern className="opacity-25" /> */}
           <NavHeader />
-          <Ripple className=" fixed -top-[80%]"/>
+          <div className="relative h-[500px] w-full">
+            <Image src="/placeholder.png" alt="Logo" fill objectFit="cover" />
+            <div className="absolute inset-0 bg-black/50" />
+          </div>
+          <Ripple />
           {children}
         </ClientThemeProvider>
       </body>
