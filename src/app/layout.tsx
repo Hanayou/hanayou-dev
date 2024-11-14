@@ -36,7 +36,7 @@ export default function RootLayout({
         <ClientThemeProvider>
           {/* <DotPattern className="opacity-25" /> */}
           <NavHeader />
-          <Ripple />
+          <Ripple className=" fixed -top-[80%]"/>
           {children}
         </ClientThemeProvider>
       </body>
