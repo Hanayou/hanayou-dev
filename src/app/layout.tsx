@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Dock } from "@/components/ui/dock";
+import Ripple from "@/components/ui/ripple";
 import DotPattern from "@/components/ui/dot-pattern";
-import NavigationHeader from "@/components/ui/NavHeader";
+import NavHeader from "@/components/ui/NavHeader";
+import { ThemeProvider } from "next-themes";
+import { ClientThemeProvider } from "@/components/ui/ThemeProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,12 +29,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} dark antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NavigationHeader />
-        {children}
+        <ClientThemeProvider>
+          {/* <DotPattern className="opacity-25" /> */}
+          <NavHeader />
+          <Ripple />
+          {children}
+        </ClientThemeProvider>
       </body>
     </html>
   );

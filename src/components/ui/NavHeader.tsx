@@ -2,73 +2,52 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Menu} from 'lucide-react'
+import { Briefcase, Hammer, Home, Languages, Mail, Menu, Moon, Sun} from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { MagicCard } from "@/components/ui/magic-card"
+import { useTheme } from "next-themes"
 
 export default function NavHeader() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const { theme, setTheme } = useTheme();
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+    console.log(`Theme changed to ${theme}!`);
+  }
 
   const navItems = [
-    { name: "Home", href: "/" },
-    { name: "Projects", href: "/projects" },
-    { name: "Contact", href: "/contact" },
-    { name: "Settings", href: "/settings" },
+    { name: "Home", href: "/", icon: <Home size={64}/> },
+    { name: "Experience", href: "/experience", icon: <Briefcase /> },
+    { name: "Projects", href: "/projects", icon: <Hammer /> },
+    { name: "Contact", href: "/contact", icon: <Mail /> },
   ]
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/70 backdrop-blur-md">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center">
-            <Link href="/" className="text-xl font-bold text-gray-900">
-              Logo
-            </Link>
+    <header className="sticky top-0 z-50">
+      <nav className="m-3">
+        <MagicCard gradientColor="white" gradientOpacity={0.02} className="bg-neutral-100/70 p-2 backdrop-blur-md dark:bg-neutral-900/70">
+          <div className="flex justify-between">
+            <div>
+            {navItems.map((item) => (
+              <Button key={item.name} className="rounded-full p-6" variant="ghost" asChild>
+                <Link href={item.href}>{item.icon}{item.name}</Link>
+              </Button>
+            ))}
+            
+            </div>
+            <div>
+              <Button className="rounded-full p-6" variant="ghost" onClick={() => {toggleTheme()}}>
+                {theme === 'light' ? <Moon /> : <Sun />}
+              </Button>
+              <Button className="rounded-full p-6" variant="ghost">
+                <Languages />
+              </Button>
+            </div>
           </div>
-          <nav className="hidden md:block">
-            <ul className="flex space-x-4">
-              {navItems.map((item) => (
-                <li key={item.name}>
-                  <Link
-                    href={item.href}
-                    className="rounded-md px-3 py-2 text-sm font-medium text-gray-900 hover:text-gray-600"
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <div className="md:hidden">
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Menu className="size-6" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[240px] sm:w-[300px]">
-                <nav>
-                  <ul className="flex flex-col space-y-4">
-                    {navItems.map((item) => (
-                      <li key={item.name}>
-                        <Link
-                          href={item.href}
-                          className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:text-gray-600"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          {item.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-              </SheetContent>
-            </Sheet>
-          </div>
-        </div>
-      </div>
+        </MagicCard>
+      </nav>
     </header>
   )
 }
